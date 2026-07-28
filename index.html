@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Singapore Grand Prix</title>
+  <meta name="description" content="F1 Grand Prix race landing page layout.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/race-hero.css">
+  <link rel="stylesheet" href="css/race-select.css">
+</head>
+<body>
+  <main class="race-page">
+    <section class="race-hero" data-race-hero aria-labelledby="raceHeroTitle">
+
+      <!--頂部裝飾圖樣-->
+      <div class="race-hero__top-deco" aria-hidden="true">
+        <span class="race-hero__top-side race-hero__top-side--left"></span>
+        <span class="race-hero__top-center"></span>
+        <span class="race-hero__top-side race-hero__top-side--right"></span>
+      </div>
+
+      <div class="race-hero__bg" aria-hidden="true">
+        <div class="race-hero__bg-layer" data-race-bg-current></div>
+        <div class="race-hero__bg-layer" data-race-bg-next></div>
+        <span class="race-hero__bg-sweep"></span>
+      </div>
+      <div class="race-hero__grid" aria-hidden="true"></div>
+      
+      <div class="race-hero__inner page-shell">
+        <div class="race-hero__content">
+          <p class="race-hero__date" data-race-date>2025.10.03 - 10.05</p>
+          <div class="race-hero__title-row">
+            <h1 class="race-hero__title" id="raceHeroTitle" data-race-title>SINGAPORE</h1>
+            <p class="race-hero__subtitle" data-race-subtitle>GRAND PRIX</p>
+          </div>
+          <p class="race-hero__desc" data-race-desc>
+            新加坡大獎賽是一級方程式賽車（F1）全球首個也是唯一的夜間街道賽。自2008年首辦以來，每年皆於市中心的濱海灣市街賽道 Marina Bay Street Circuit 舉行。結合了絢麗的城市夜景、高強度的賽車競技與頂級國際演唱會，使其成為F1賽曆中最具代表性、最像嘉年華的賽事之一。
+          </p>
+          <div class="race-hero__actions">
+            <a class="race-hero__button" href="#" data-race-map-button>
+              <span>查看地圖</span>
+            </a>
+            <a class="race-hero__button" href="#" data-race-itinerary-button>
+              <span>查看行程</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="race-hero__track" aria-hidden="true">
+          <div class="race-hero__track-visual" data-track-visual>
+            <img class="race-hero__track-img" data-race-track src="assets/track-singapore.svg" alt="">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--清單-->
+    <section class="race-select" data-race-select aria-labelledby="raceSelectTitle">
+      <div class="race-select__top-deco" aria-hidden="true"></div>
+      
+      <div class="race-select__inner">
+        <header class="race-select__head">
+          <h2 class="race-select__title" id="raceSelectTitle">賽事清單</h2>
+          <p class="race-select__label">RACE SELECT</p>
+        </header>
+
+        <div class="race-select__scroller" data-race-scroller tabindex="0" aria-label="賽事清單，可左右捲動">
+          <div class="race-select__list" data-race-list></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,506 @@
+.race-select {
+  position: fixed;
+  z-index: 6;
+  bottom: 0;
+  width: 100dvw;
+  color: #fff;
+  background:linear-gradient(8deg, rgb(45 45 45 / 50%) 68%, rgb(161 161 161 / 50%));
+  backdrop-filter: blur(4px);
+}
+
+.race-select,
+.race-select * {
+  box-sizing: border-box;
+}
+
+.race-select__top-deco {
+  display: none;
+}
+
+.race-select__inner {
+  width: 96%;
+  margin: 15px auto;
+}
+
+.race-select__head {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+.race-select__title,
+.race-select__label {
+  display: block;
+  visibility: visible;
+  opacity: 1;
+}
+
+.race-select__title {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(24px, 2.5vw, 32px);
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.race-select__label {
+  margin: 0;
+  color: var(--race-card-red, var(--color-red, #ff2d55));
+  font-size: clamp(16px, 2vw, 22px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.race-select__scroller {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.34) transparent;
+  outline: none;
+  overscroll-behavior-x: contain;
+}
+
+.race-select__scroller::-webkit-scrollbar {
+  height: 8px;
+}
+
+.race-select__scroller::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.race-select__scroller::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.34);
+}
+
+.race-select__list {
+  --race-card-gap: 15px;
+
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, 1fr);
+  grid-auto-columns: min(calc((100% - (var(--race-card-gap) * 1)) / 3), 420px);
+  gap: var(--race-card-gap);
+  min-width: max-content;
+  padding: 8px 0 10px;
+}
+
+.race-card {
+  --card-cut: 28px;
+  --card-border: 2px;
+  --card-inner-cut: calc(var(--card-cut) - var(--card-border));
+  --race-card-red: var(--color-red, #ff2d55);
+  --frame-color: rgba(255, 255, 255, 0.62);
+  --surface-color: rgb(18 18 18);
+  --surface-glow: rgba(255, 255, 255, 0);
+  --mark-opacity: 0.42;
+  --mark-bg: rgba(255, 255, 255, 0.05);
+  --mark-image: url("../assets/cardbg.png");
+
+  position: relative;
+  min-width: 0;
+  height: 74px;
+  padding: 0;
+  border: 0;
+  color: #fff;
+  background: transparent;
+  appearance: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 180ms ease;
+}
+
+/* 外框層：用 polygon 畫出完整斜角外框，避免 border 被 clip-path 切掉。 */
+.race-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--frame-color);
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - var(--card-cut)),
+    calc(100% - var(--card-cut)) 100%,
+    0 100%
+  );
+}
+
+/* 內底層：比外框內縮，形成沿斜角連續的邊框。 */
+.race-card::after {
+  content: "";
+  position: absolute;
+  inset: var(--card-border);
+  z-index: 0;
+  background:
+    linear-gradient(270deg, var(--surface-glow), transparent 58%),
+    var(--surface-color);
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - var(--card-inner-cut)),
+    calc(100% - var(--card-inner-cut)) 100%,
+    0 100%
+  );
+}
+
+/* 左側箭頭圖層：只作為背景裝飾，不參與資訊排版。 */
+.race-card__mark {
+  position: absolute;
+  left: var(--card-border);
+  top: var(--card-border);
+  bottom: var(--card-border);
+  z-index: 1;
+  width: 132px;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, var(--mark-bg), transparent 78%),
+    var(--mark-image) left center / auto 100% no-repeat;
+  opacity: var(--mark-opacity);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* 資訊層：標題、英文、熱門圖示、日期獨立排版。 */
+.race-card__content {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  height: 100%;
+  padding: 0px 18px 0 74px;
+  column-gap: 12px;
+}
+
+.race-card__title-row {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.race-card__date {
+  display: none;
+  justify-self: end;
+  visibility: visible;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(18px, 1.14vw, 24px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.race-card__title {
+  overflow: hidden;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.race-card__en {
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+  line-height: 1;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.race-card__popular {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  pointer-events: none;
+}
+
+.race-card__popular:empty {
+  display: none;
+}
+
+.race-card__like {
+  display: block;
+  width: 34px;
+  height: 34px;
+  color: #fff;
+}
+
+.race-card.is-active {
+  --frame-color: var(--race-card-red);
+  --surface-color: #49031e;
+  --surface-glow: #49031e;
+  --mark-opacity: 0.9;
+  --mark-bg: rgb(255 0 0 / 78%);
+  --mark-image: url("../assets/cardbg-act.png");
+}
+
+.race-card.is-active .race-card__en,
+.race-card.is-active .race-card__date {
+  color: rgb(194 140 140 / 90%);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .race-card:hover {
+    --frame-color: rgba(255, 255, 255, 0.9);
+    --surface-glow: rgba(255, 255, 255, 0.14);
+    --mark-opacity: 0.62;
+  }
+
+  .race-card.is-active:hover {
+    --frame-color: var(--race-card-red);
+    --surface-glow: rgb(162 0 23 / 33%);
+    --mark-opacity: 0.95;
+  }
+}
+
+@media (max-width: 1200px) {
+
+  .race-card__mark {
+    width: 116px;
+  }
+}
+
+@media (max-width: 1024px) {
+
+}
+
+@media (max-width: 768px) {
+  .race-card__content {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 0 22px 0 118px;
+  }
+  .race-card__title{
+    font-size: 18px;
+  }
+
+  .race-card__title-row {
+    gap: 4px;
+  }
+
+  .race-card__en {
+    display: block;
+    margin-top: 2px;
+    color: rgba(52, 54, 58, 0.68);
+    font-size: 12px;
+    white-space: normal;
+  }
+
+  .race-card__date {
+    color: rgba(52, 54, 58, 0.62);
+    font-size: clamp(16px, 4.2vw, 22px);
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .race-select {
+    position: relative;
+    z-index: 5;
+    bottom: auto;
+    width: 100%;
+    height: 52dvh;
+    min-height: 0;
+    color: var(--color-ink, #34363a);
+    background:
+      linear-gradient(rgba(56, 58, 60, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56, 58, 60, 0.05) 1px, transparent 1px),
+      #f5f5f5;
+    background-size: 32px 32px, 32px 32px, auto;
+    backdrop-filter: none;
+  }
+
+  .race-select__top-deco {
+    position: absolute;
+    display: block;
+    z-index: 4;
+    left: 0;
+    top: -39px;
+    width: 100%;
+    height: 40px;
+    pointer-events: none;
+    filter: drop-shadow(0px -6px 3px #111111bd);
+  }
+
+  .race-select__top-deco::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: #f5f5f5;
+    clip-path: polygon(
+      0 0,
+      35px 0,
+      65px 30px,
+      calc(100% - 65px) 30px,
+      calc(100% - 35px) 0,
+      100% 0,
+      100% 100%,
+      0 100%
+    );
+  }
+
+  .race-select__top-deco::after {
+    content: "";
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: 12px;
+    z-index: 1;
+    height: 24px;
+    background: #eaff00;
+    clip-path: polygon(
+      0 0,
+      22% 0,
+      calc(22% + 10px) 10px,
+      calc(78% - 10px) 10px,
+      78% 0,
+      100% 0,
+      100% 100%,
+      0 100%
+    );
+  }
+
+  .race-select__inner {
+    width: min(92%, 720px);
+    height: 100%;
+    margin: 0 auto;
+    padding-top: 18px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .race-select__head {
+    display: flex;
+    flex: 0 0 auto;
+  }
+
+  .race-select__scroller {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-right: 2px;
+  }
+
+  .race-select__title {
+    position: relative;
+    margin: 0;
+    padding-left: 12px;
+    color: #34363a;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .race-select__title::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    bottom: 2px;
+    left: 0;
+    width: 6px;
+    background: #34363a;
+  }
+
+  .race-select__label {
+    margin: 0;
+    color: var(--race-card-red, var(--color-red, #ff2d55));
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0px;
+  }
+
+  .race-select__list {
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-rows: none;
+    grid-auto-columns: auto;
+    gap: 12px;
+    min-width: 0;
+    padding: 0 0 24px;
+  }
+
+  .race-card {
+    --card-cut: 22px;
+    --frame-color: rgba(49, 51, 54, 0.14);
+    --surface-color: rgba(255, 255, 255, 0.86);
+    --surface-glow: rgba(255, 255, 255, 0);
+    --mark-opacity: 0.35;
+    --mark-bg: rgba(49, 51, 54, 0.08);
+
+    height: 64px;
+    color: #34363a;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+  }
+
+  .race-card.is-active {
+    --frame-color: var(--race-card-red);
+    --surface-color: rgba(255, 255, 255, 0.9);
+    --surface-glow: rgb(255 228 234);
+    --mark-opacity: 0.82;
+    --mark-bg: rgb(255 255 255 / 0%);
+
+    transform: translateY(2px);
+    color: #383838;
+  }
+
+  .race-card__mark {
+    width: 96px;
+    mix-blend-mode: normal;
+  }
+
+  .race-card__content {
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 5px;
+    padding: 0 18px 0 76px;
+  }
+
+  .race-card__title-row {
+    display: block;
+  }
+
+  .race-card__like {
+    width: 30px;
+    height: 30px;
+    color: var(--race-card-red);
+  }
+
+  .race-card__date {
+    color: rgba(52, 54, 58, 0.62);
+    font-size: clamp(16px, 4.2vw, 22px);
+  }
+
+  .race-card.is-active .race-card__en,
+  .race-card.is-active .race-card__date {
+    color: #6d6d6d;
+  }
+}
+
+@media (max-width: 430px) {
+  .race-card__mark {
+    width: 78px;
+  }
+
+  .race-card__content {
+    padding-right: 18px;
+    padding-left: 66px;
+  }
+
+  .race-card__date {
+    display: none;
+  }
+}

@@ -1,0 +1,890 @@
+.race-hero {
+  --hero-bg-desktop: url("../assets/singapore-hero-pc.svg");
+  --hero-bg-mobile: url("../assets/singapore-hero-mobile.svg");
+  --track-tilt-x: 0deg;
+  --track-tilt-y: 0deg;
+
+  position: relative;
+  min-height: 820px;
+  height: 100dvh;
+  color: #fff;
+  background: var(--color-dark);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.race-hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  overflow: hidden;
+  background-image: var(--hero-bg-desktop);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  transform: scale(1.02);
+  isolation: isolate;
+}
+
+/*
+ * 舊版 HTML 仍使用 .race-hero__bg 本身顯示背景；新版 HTML 加入雙背景層後，
+ * 由 current / next 兩層接手，才能在切換賽場時做無縫過場。
+ */
+.race-hero__bg:has(> .race-hero__bg-layer) {
+  background-image: none;
+  transform: none;
+}
+
+.race-hero__bg-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  transform: scale(1.02);
+  transform-origin: center;
+  backface-visibility: hidden;
+  will-change: clip-path, filter, opacity, transform;
+}
+
+.race-hero__bg-layer[data-race-bg-current] {
+  background-image: var(--layer-bg-desktop, var(--hero-bg-desktop));
+}
+
+.race-hero__bg-layer[data-race-bg-next] {
+  z-index: 1;
+  opacity: 0;
+  background-image: var(--layer-bg-desktop, none);
+  clip-path: polygon(108% 0, 108% 0, 88% 100%, 88% 100%);
+  pointer-events: none;
+}
+
+.race-hero__bg-sweep {
+  position: absolute;
+  z-index: 2;
+  top: -15%;
+  bottom: -15%;
+  left: 0;
+  width: 2px;
+  opacity: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(234, 255, 0, 0.18) 22%,
+    rgba(255, 255, 255, 0.96) 50%,
+    rgba(234, 255, 0, 0.18) 78%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 12px rgba(234, 255, 0, 0.72),
+    0 0 32px rgba(234, 255, 0, 0.36);
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+.race-hero__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.38) 50%, rgba(0, 0, 0, 0.76) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.24) 55%, rgba(0, 0, 0, 0.82) 100%);
+  pointer-events: none;
+}
+
+.race-hero__top-deco {
+  display: none;
+}
+
+.race-hero__bottom-deco {
+  display: none;
+}
+
+.race-hero__grid {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: 0.68;
+  mix-blend-mode: screen;
+}
+
+.race-hero__inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0px, 1fr) minmax(360px, 1fr);
+  align-items: center;
+  gap: clamp(32px, 4.5vw, 88px);
+  height: calc(100% - 178px);
+}
+
+.race-hero__content {
+  max-width: 760px;
+}
+
+.race-hero__date {
+  margin: 0 0 0 0.25rem;
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.09em;
+  color: var(--color-acid);
+}
+
+.race-hero__title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.race-hero__title {
+  margin: 0;
+  /*color: var(--color-acid);*/
+  color: #fff;
+  font-size: 80px;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+}
+
+.race-hero__subtitle {
+  margin: 0;
+  font-size: 27px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 2px;
+  white-space: nowrap;
+  color: #aaaaaa;
+}
+
+.race-hero__desc {
+  max-width: 622px;
+  margin: 2rem 0 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.93);
+}
+
+.race-hero__actions {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  gap: 35px;
+  width: min(100%, 520px);
+  margin-top: 82px;
+}
+
+.race-hero__button {
+  --button-frame-color: rgba(236, 255, 18, 0.72);
+
+  position: relative;
+  display: inline-flex;
+  flex: 0 1 240px;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 68px;
+  padding: 18px 42px;
+  color: var(--color-acid);
+  text-decoration: none;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 1;
+  background: var(--button-frame-color);
+  border: 0;
+  clip-path: polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);
+  isolation: isolate;
+  transition: filter 180ms ease, transform 180ms ease;
+}
+
+.race-hero__button[hidden] {
+  display: none;
+}
+
+.race-hero__button[aria-disabled="true"] {
+  cursor: default;
+}
+
+.race-hero__button::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: 0;
+  background:
+    linear-gradient(90deg, rgba(16, 24, 16, 0.96), rgba(20, 37, 16, 0.96));
+  clip-path: inherit;
+  pointer-events: none;
+}
+
+.race-hero__button span {
+  position: relative;
+  z-index: 2;
+}
+
+.race-hero__button:hover {
+  --button-frame-color: rgba(236, 255, 18, 0.96);
+
+  filter: brightness(1.18);
+  transform: translateY(-2px);
+}
+
+.race-hero__track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  perspective: 760px;
+
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.race-hero__track-visual {
+  width: min(43vw, 720px);
+  transform: rotateX(var(--track-tilt-y)) rotateY(var(--track-tilt-x)) translateZ(0);
+  transform-style: preserve-3d;
+  transition: transform 180ms ease-out;
+  will-change: transform;
+}
+
+.race-hero__track-img {
+  width: 100%;
+  -webkit-user-drag: none;
+  user-select: none;
+  filter:
+    drop-shadow(0 0 10px rgba(160, 255, 100, 0.64))
+    drop-shadow(0 0 24px rgba(160, 255, 155, 0.45))
+    drop-shadow(0 0 52px rgba(255, 255, 255, 0.38));
+}
+
+/* PC：首次進場與切換賽場的背景過場 */
+@media (min-width: 769px) {
+  .race-hero.is-bg-preparing .race-hero__bg-layer[data-race-bg-current] {
+    opacity: 0;
+    clip-path: polygon(108% 0, 108% 0, 88% 100%, 88% 100%);
+    filter: brightness(0.58) saturate(0.82);
+    transform: scale(1.065);
+  }
+
+  .race-hero.is-bg-preparing .race-hero__content,
+  .race-hero.is-bg-preparing .race-hero__track {
+    opacity: 0;
+  }
+
+  .race-hero.is-bg-entering .race-hero__bg-layer[data-race-bg-current] {
+    animation: race-hero-bg-enter 900ms cubic-bezier(0.65, 0, 0.2, 1) both;
+  }
+
+  .race-hero.is-bg-entering .race-hero__content {
+    animation: race-hero-content-enter 560ms 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .race-hero.is-bg-entering .race-hero__track {
+    animation: race-hero-track-enter 600ms 230ms ease-out both;
+  }
+
+  .race-hero.is-bg-switching .race-hero__bg-layer[data-race-bg-current] {
+    animation: race-hero-bg-exit 760ms cubic-bezier(0.65, 0, 0.2, 1) both;
+  }
+
+  .race-hero.is-bg-switching .race-hero__bg-layer[data-race-bg-next] {
+    animation: race-hero-bg-reveal 760ms cubic-bezier(0.65, 0, 0.2, 1) both;
+  }
+
+  .race-hero.is-bg-switching .race-hero__bg-sweep {
+    animation: race-hero-bg-sweep 760ms cubic-bezier(0.65, 0, 0.2, 1) both;
+  }
+
+  .race-hero.is-content-switching .race-hero__content {
+    animation: race-hero-content-swap 760ms ease both;
+  }
+
+  .race-hero.is-content-switching .race-hero__track-img {
+    animation: race-hero-track-swap 760ms ease both;
+  }
+}
+
+@keyframes race-hero-bg-enter {
+  0% {
+    opacity: 0;
+    clip-path: polygon(108% 0, 108% 0, 88% 100%, 88% 100%);
+    filter: brightness(0.58) saturate(0.82);
+    transform: scale(1.065);
+  }
+
+  18% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, -20% 100%);
+    filter: brightness(1) saturate(1);
+    transform: scale(1.02);
+  }
+}
+
+@keyframes race-hero-bg-exit {
+  0% {
+    opacity: 1;
+    filter: brightness(1) saturate(1);
+    transform: scale(1.02);
+  }
+
+  100% {
+    opacity: 0.52;
+    filter: brightness(0.58) saturate(0.78);
+    transform: scale(1.065);
+  }
+}
+
+@keyframes race-hero-bg-reveal {
+  0% {
+    opacity: 1;
+    clip-path: polygon(108% 0, 108% 0, 88% 100%, 88% 100%);
+    filter: brightness(0.7) saturate(0.86);
+    transform: scale(1.065);
+  }
+
+  100% {
+    opacity: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, -20% 100%);
+    filter: brightness(1) saturate(1);
+    transform: scale(1.02);
+  }
+}
+
+@keyframes race-hero-bg-sweep {
+  0% {
+    opacity: 0;
+    transform: translateX(calc(100vw + 18vh)) skewX(-11deg);
+  }
+
+  16% {
+    opacity: 0.9;
+  }
+
+  78% {
+    opacity: 0.62;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-18vh) skewX(-11deg);
+  }
+}
+
+@keyframes race-hero-content-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes race-hero-track-enter {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes race-hero-content-swap {
+  0%,
+  29% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  39% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  49% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  68%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes race-hero-track-swap {
+  0%,
+  29% {
+    opacity: 1;
+  }
+
+  39%,
+  49% {
+    opacity: 0;
+  }
+
+  68%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes race-hero-mobile-bg-enter {
+  0% {
+    opacity: 0;
+    filter: brightness(0.62) saturate(0.84);
+    transform: scale(1.075);
+  }
+
+  22% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    filter: brightness(1) saturate(1);
+    transform: scale(1.02);
+  }
+}
+
+@keyframes race-hero-mobile-bg-exit {
+  0% {
+    opacity: 1;
+    filter: brightness(1) saturate(1);
+    transform: scale(1.02);
+  }
+
+  100% {
+    opacity: 0.46;
+    filter: brightness(0.62) saturate(0.8);
+    transform: scale(1.055);
+  }
+}
+
+@keyframes race-hero-mobile-bg-reveal {
+  0% {
+    opacity: 1;
+    clip-path: polygon(110% 0, 110% 0, 92% 100%, 92% 100%);
+    filter: brightness(0.72) saturate(0.88);
+    transform: scale(1.06);
+  }
+
+  100% {
+    opacity: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, -18% 100%);
+    filter: brightness(1) saturate(1);
+    transform: scale(1.02);
+  }
+}
+
+@keyframes race-hero-mobile-bg-sweep {
+  0% {
+    opacity: 0;
+    transform: translateX(calc(100vw + 14vh)) skewX(-9deg);
+  }
+
+  18% {
+    opacity: 0.7;
+  }
+
+  76% {
+    opacity: 0.42;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-14vh) skewX(-9deg);
+  }
+}
+
+@keyframes race-hero-mobile-content-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes race-hero-mobile-track-enter {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes race-hero-mobile-content-swap {
+  0%,
+  30% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  39% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  50% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  68%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes race-hero-mobile-track-swap {
+  0%,
+  30% {
+    opacity: 1;
+  }
+
+  39%,
+  50% {
+    opacity: 0;
+  }
+
+  68%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1200px) {
+  .race-hero {
+    min-height: 780px;
+  }
+
+  .race-hero__inner {
+    grid-template-columns: minmax(0, 0.95fr) minmax(360px, 0.85fr);
+  }
+
+  .race-hero__actions {
+    margin-top: 62px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .race-hero__inner {
+    grid-template-columns: 1fr 1fr;
+    align-content: center;
+    gap: 20px;
+  }
+
+  .race-hero__content {
+    max-width: 760px;
+  }
+
+  .race-hero__button {
+    padding-inline: clamp(14px, 3vw, 28px);
+    font-size: clamp(20px, 2.6vw, 27px);
+  }
+
+  .race-hero__track {
+    width: min(42vw, 380px);
+  }
+
+  .race-hero__track-visual {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .race-hero {
+    min-height: 720px;
+    --hero-deco-color: #eaff00;
+    --hero-deco-height: 38px;
+    --hero-deco-bar-height: 12px;
+    --hero-deco-center-width: 140px;
+    --hero-deco-side-cut: 20px;
+
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    height: 100dvh;
+    min-height: 100dvh;
+  }
+
+  .race-hero__bg {
+    background-image: var(--hero-bg-mobile);
+    background-position: center top;
+  }
+
+  .race-hero__bg-layer {
+    background-position: center top;
+  }
+
+  .race-hero__bg-layer[data-race-bg-current] {
+    background-image: var(--layer-bg-mobile, var(--hero-bg-mobile));
+  }
+
+  .race-hero__bg-layer[data-race-bg-next] {
+    background-image: var(--layer-bg-mobile, none);
+  }
+
+  .race-hero__bg-sweep {
+    width: 1px;
+    box-shadow:
+      0 0 8px rgba(234, 255, 0, 0.58),
+      0 0 18px rgba(234, 255, 0, 0.24);
+  }
+
+  /* Mobile：首次進場使用淡入縮放，避免整個 Hero 位移。 */
+  .race-hero.is-bg-preparing .race-hero__bg-layer[data-race-bg-current] {
+    opacity: 0;
+    filter: brightness(0.62) saturate(0.84);
+    transform: scale(1.075);
+  }
+
+  .race-hero.is-bg-preparing .race-hero__content,
+  .race-hero.is-bg-preparing .race-hero__track {
+    opacity: 0;
+  }
+
+  /* 首次進場 */
+  .race-hero.is-bg-entering .race-hero__bg-layer[data-race-bg-current] {
+    animation: race-hero-mobile-bg-enter 700ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  /* 內容進場 */
+  .race-hero.is-bg-entering .race-hero__content {
+    animation: race-hero-mobile-content-enter 520ms 110ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* 賽道圖進場 */
+  .race-hero.is-bg-entering .race-hero__track {
+    animation: race-hero-mobile-track-enter 540ms 130ms ease-out both;
+  }
+
+  /* Mobile：切換時由右往左斜切，總長度與 JS 的 750ms 對齊。 */
+  .race-hero.is-bg-switching .race-hero__bg-layer[data-race-bg-current] {
+    animation: race-hero-mobile-bg-exit 750ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  .race-hero.is-bg-switching .race-hero__bg-layer[data-race-bg-next] {
+    animation: race-hero-mobile-bg-reveal 750ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  .race-hero.is-bg-switching .race-hero__bg-sweep {
+    animation: race-hero-mobile-bg-sweep 750ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  .race-hero.is-content-switching .race-hero__content {
+    animation: race-hero-mobile-content-swap 750ms ease both;
+  }
+
+  .race-hero.is-content-switching .race-hero__track-img {
+    animation: race-hero-mobile-track-swap 750ms ease both;
+  }
+
+  .race-hero__bg::after {
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.38) 0%, rgba(0, 0, 0, 0.62) 36%, rgba(0, 0, 0, 0.62) 100%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0.36));
+  }
+
+  .race-hero__top-deco {
+    --cut: 6px;
+
+    position: absolute;
+    z-index: 4;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--hero-deco-height);
+    display: flex;
+    align-items: flex-start;
+    pointer-events: none;
+    gap: 32px;
+  }
+
+  .race-hero__top-side {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: var(--hero-deco-bar-height);
+    background: var(--hero-deco-color);
+  }
+
+  .race-hero__top-side--left {
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      calc(100% - var(--cut)) var(--cut),
+      calc(50% + var(--cut)) var(--cut),
+      50% 100%,
+      0 100%
+    );
+  }
+
+  .race-hero__top-side--right {
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% 100%,
+      50% 100%,
+      calc(50% - var(--cut)) var(--cut),
+      var(--cut) var(--cut)
+    );
+  }
+
+  .race-hero__top-center {
+    flex: 0 0 var(--hero-deco-center-width);
+    aspect-ratio: 420 / 70;
+    width: var(--hero-deco-center-width);
+    height: auto;
+    background: url("../assets/deco_mob-top.svg") center top / 100% 100% no-repeat;
+  }
+
+  .race-hero__grid {
+    background-size: 47px 47px;
+    opacity: 0.72;
+  }
+
+  .race-hero__inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 3.5dvh 0 10dvh;
+    flex-direction: column;
+    gap: 10px;
+   
+  }
+
+  .race-hero__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .race-hero__date {
+    margin: 0.5rem 0;
+    font-size: clamp(12px, 5vw, 21px);
+    font-weight: normal;
+    letter-spacing: 0.5px;
+  }
+
+  .race-hero__title-row {
+    display: block;
+  }
+
+  .race-hero__title {
+    font-size: clamp(36px, 15vw, 80px);
+    line-height: 1.1;
+  }
+
+  .race-hero__subtitle {
+    margin-top: 6px;
+    font-size: clamp(14px, 7vw, 27px);
+    letter-spacing: 4px;
+  }
+
+  .race-hero__desc {
+    max-width: 85%;
+    margin-top: 36px;
+    font-size: 14px;
+    line-height: 1.7;
+    text-align: left;
+  }
+
+  .race-hero__actions {
+    width: min(90%, 440px);
+    margin-top: 60px;
+    flex-wrap: nowrap;
+    gap: 35px;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px 10px;
+  }
+
+  .race-hero__button {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 66px;
+    padding: 16px 12px;
+    font-size: 21px;
+    width: 100%;
+  }
+
+  .race-hero__track {
+    display: none;
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: 60vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .race-hero__track-visual,
+  .race-hero__button {
+    transition: none;
+  }
+
+  .race-hero.is-bg-preparing .race-hero__bg-layer[data-race-bg-current],
+  .race-hero.is-bg-entering .race-hero__bg-layer[data-race-bg-current],
+  .race-hero.is-bg-switching .race-hero__bg-layer[data-race-bg-current],
+  .race-hero.is-bg-switching .race-hero__bg-layer[data-race-bg-next],
+  .race-hero.is-bg-preparing .race-hero__content,
+  .race-hero.is-bg-preparing .race-hero__track,
+  .race-hero.is-bg-entering .race-hero__content,
+  .race-hero.is-bg-entering .race-hero__track,
+  .race-hero.is-content-switching .race-hero__content,
+  .race-hero.is-content-switching .race-hero__track-img {
+    animation: none;
+  }
+
+  .race-hero.is-bg-preparing .race-hero__bg-layer[data-race-bg-current],
+  .race-hero.is-bg-entering .race-hero__bg-layer[data-race-bg-current],
+  .race-hero.is-bg-switching .race-hero__bg-layer[data-race-bg-current],
+  .race-hero.is-bg-switching .race-hero__bg-layer[data-race-bg-next] {
+    opacity: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    filter: none;
+    transform: scale(1.02);
+  }
+
+  .race-hero.is-bg-preparing .race-hero__content,
+  .race-hero.is-bg-preparing .race-hero__track,
+  .race-hero.is-content-switching .race-hero__content,
+  .race-hero.is-content-switching .race-hero__track-img {
+    opacity: 1;
+    transform: none;
+  }
+
+  .race-hero__bg-sweep {
+    display: none;
+  }
+}

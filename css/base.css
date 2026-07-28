@@ -1,0 +1,74 @@
+:root {
+  --font-main: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  --color-acid: #ecff12;
+  --color-red: #ff2d55;
+  --color-dark: #050609;
+  --color-ink: #303236;
+  --color-line: rgba(255, 255, 255, 0.18);
+  --page-max: 1760px;
+  --shell-x: clamp(32px, 5.8vw, 112px);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  color: var(--color-ink);
+  background: #f6f6f3;
+  text-rendering: geometricPrecision;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+a {
+  font: inherit;
+}
+
+button {
+  border: 0;
+}
+
+.page-shell {
+  width: min(100%, var(--page-max));
+  margin-inline: auto;
+  padding-inline: var(--shell-x);
+}
+
+.race-page {
+  min-height: 100vh;
+  overflow-x: clip;
+}
+
+@media (max-width: 1200px) {
+  :root {
+    --shell-x: clamp(28px, 4.4vw, 64px);
+  }
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --shell-x: 36px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --shell-x: 24px;
+  }
+
+  body {
+    background: #f7f7f5;
+  }
+}
