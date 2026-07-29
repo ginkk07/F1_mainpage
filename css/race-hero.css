@@ -3,6 +3,10 @@
   --hero-bg-mobile: url("../assets/singapore-hero-mobile.svg");
   --track-tilt-x: 0deg;
   --track-tilt-y: 0deg;
+  --hospitality-gold: #aa9139;
+  --hospitality-gold-bright: #d4c35d;
+  --hospitality-surface: rgba(8, 9, 8, 0.97);
+  --hospitality-cta: rgb(75 134 39 / 0%);
 
   position: relative;
   min-height: 820px;
@@ -11,6 +15,13 @@
   background: var(--color-dark);
   overflow: hidden;
   isolation: isolate;
+}
+
+.race-icon-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
 }
 
 .race-hero__bg {
@@ -125,6 +136,7 @@
 }
 
 .race-hero__content {
+  min-height: 480px;
   max-width: 760px;
 }
 
@@ -174,67 +186,244 @@
   color: rgba(255, 255, 255, 0.93);
 }
 
-.race-hero__actions {
-  display: flex;
-  align-items: stretch;
-  flex-wrap: nowrap;
-  gap: 35px;
-  width: min(100%, 520px);
-  margin-top: 82px;
+.race-hero__hospitality {
+  width: min(100%, 620px);
+  margin-top: 28px;
 }
 
-.race-hero__button {
-  --button-frame-color: rgba(236, 255, 18, 0.72);
-
-  position: relative;
-  display: inline-flex;
-  flex: 0 1 240px;
-  align-items: center;
-  justify-content: center;
-  min-width: 0;
-  min-height: 68px;
-  padding: 18px 42px;
-  color: var(--color-acid);
-  text-decoration: none;
-  font-size: 25px;
-  font-weight: 500;
-  line-height: 1;
-  background: var(--button-frame-color);
-  border: 0;
-  clip-path: polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);
-  isolation: isolate;
-  transition: filter 180ms ease, transform 180ms ease;
-}
-
-.race-hero__button[hidden] {
+.race-hero__hospitality[hidden],
+.race-hero__hospitality-media[hidden] {
   display: none;
 }
 
-.race-hero__button[aria-disabled="true"] {
-  cursor: default;
+.race-hero__hospitality-card {
+  --card-cut: 15px;
+
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(220px, 0.51fr) minmax(0, 0.49fr);
+  aspect-ratio: 2.8 / 1;
+  padding: 1px;
+  overflow: hidden;
+  background:var(--hospitality-gold-bright);
+  clip-path: polygon(
+    var(--card-cut) 0,
+    100% 0,
+    100% calc(100% - var(--card-cut)),
+    calc(100% - var(--card-cut)) 100%,
+    0 100%,
+    0 var(--card-cut)
+  );
+  isolation: isolate;
 }
 
-.race-hero__button::before {
+.race-hero__hospitality-card::before {
   content: "";
   position: absolute;
   inset: 1px;
   z-index: 0;
   background:
-    linear-gradient(90deg, rgba(16, 24, 16, 0.96), rgba(20, 37, 16, 0.96));
+    linear-gradient(108deg, rgba(20, 19, 12, 0.92), var(--hospitality-surface) 58%);
   clip-path: inherit;
   pointer-events: none;
 }
 
-.race-hero__button span {
+.race-hero__hospitality-media,
+.race-hero__hospitality-content {
   position: relative;
-  z-index: 2;
+  z-index: 1;
+  min-width: 0;
 }
 
-.race-hero__button:hover {
-  --button-frame-color: rgba(236, 255, 18, 0.96);
+.race-hero__hospitality-media {
+  overflow: hidden;
+  clip-path: polygon(
+    calc(var(--card-cut) - 1px) 0,
+    100% 0,
+    100% 100%,
+    0 100%,
+    0 calc(var(--card-cut) - 1px)
+  );
+  height: 99%;
+  margin-top: 1.5px;
+}
 
-  filter: brightness(1.18);
-  transform: translateY(-2px);
+.race-hero__hospitality-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 68%, rgba(6, 7, 6, 0.5) 100%),
+    linear-gradient(180deg, transparent 58%, rgba(0, 0, 0, 0.34) 100%);
+  pointer-events: none;
+}
+
+.race-hero__hospitality-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.race-hero__hospitality-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6px 14px 6px 14px;
+}
+
+.race-hero__hospitality-eyebrow,
+.race-hero__hospitality-title,
+.race-hero__hospitality-desc {
+  margin: 0;
+}
+
+.race-hero__hospitality-eyebrow {
+  color: var(--hospitality-gold-bright);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.11em;
+}
+
+.race-hero__hospitality-title {
+  margin-top: 4px;
+  color: #f5f2e7;
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+
+.race-hero__hospitality-desc {
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 10px;
+  font-weight: lighter;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+}
+
+.race-hero__hospitality-desc[hidden] {
+  display: none;
+}
+
+.race-hero__hospitality-cta {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 34px;
+  margin-top: 15px;
+  padding: 9px 15px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.3;
+  background: var(--hospitality-cta);
+  border: 1px solid rgb(200 200 200 / 25%);
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.race-hero__hospitality-cta[hidden] {
+  display: none;
+}
+
+.race-hero__external-icon {
+  flex: 0 0 auto;
+  width: 29px;
+  height: 25px;
+  color: #fff;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+.race-hero__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  width: max-content;
+  max-width: 100%;
+  margin-top: 14px;
+}
+
+.race-hero__actions[hidden] {
+  display: none;
+}
+
+.race-hero__hospitality[hidden] + .race-hero__actions {
+  margin-top: 42px;
+}
+
+.race-hero__action-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 34px;
+  margin: 7px 18px;
+  color: rgba(255, 255, 255, 0.88);
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 2;
+  letter-spacing: 0.06em;
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.race-hero__action-link:first-child {
+  padding-left: 0;
+}
+
+.race-hero__actions:has(.race-hero__action-link:first-child[hidden])
+  .race-hero__action-link:last-child:not([hidden]) {
+  padding-left: 0;
+}
+
+.race-hero__action-link[hidden] {
+  display: none;
+}
+
+.race-hero__action-link[aria-disabled="true"],
+.race-hero__hospitality-cta[aria-disabled="true"] {
+  cursor: default;
+}
+
+.race-hero__hospitality-cta:focus-visible,
+.race-hero__action-link:focus-visible {
+  outline: 2px solid var(--color-acid);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .race-hero__hospitality-cta:hover {
+    border-color: rgb(200 200 200 / 45%);
+    background: rgb(200 200 200 / 5%);
+  }
+
+  .race-hero__action-link:hover {
+    color: #fff;
+  }
+
+  .race-hero__action-link:hover > .race-hero__external-icon{
+    color: var(--color-acid);
+  }
+
+  .race-hero__hospitality-cta:hover > .race-hero__external-icon{
+    color: var(--color-acid);
+  }
+  
 }
 
 .race-hero__track {
@@ -588,8 +777,12 @@
     grid-template-columns: minmax(0, 0.95fr) minmax(360px, 0.85fr);
   }
 
-  .race-hero__actions {
-    margin-top: 62px;
+  .race-hero__hospitality {
+    width: min(100%, 480px);
+  }
+
+  .race-hero__hospitality-card {
+    grid-template-columns: minmax(190px, 0.5fr) minmax(0, 0.5fr);
   }
 }
 
@@ -604,9 +797,16 @@
     max-width: 760px;
   }
 
-  .race-hero__button {
-    padding-inline: clamp(14px, 3vw, 28px);
-    font-size: clamp(20px, 2.6vw, 27px);
+  .race-hero__hospitality-card {
+    grid-template-columns: minmax(170px, 0.48fr) minmax(0, 0.52fr);
+  }
+
+  .race-hero__hospitality-content {
+    padding-inline: 16px;
+  }
+
+  .race-hero__hospitality-title {
+    font-size: 19px;
   }
 
   .race-hero__track {
@@ -785,6 +985,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    min-height: 420px;
     max-width: 100%;
     text-align: center;
   }
@@ -819,23 +1021,70 @@
     text-align: left;
   }
 
-  .race-hero__actions {
-    width: min(90%, 440px);
-    margin-top: 60px;
-    flex-wrap: nowrap;
-    gap: 35px;
-    flex-direction: column;
-    align-items: center;
-    padding: 0px 10px;
+  .race-hero__hospitality {
+    width: min(90%, 420px);
+    margin-top: 24px;
   }
 
-  .race-hero__button {
-    flex: 1 1 0;
-    min-width: 0;
-    min-height: 66px;
-    padding: 16px 12px;
-    font-size: 21px;
-    width: 100%;
+  .race-hero__hospitality-card {
+    --card-cut: 11px;
+
+    grid-template-columns: minmax(128px, 0.8fr) minmax(0, 1fr);
+    aspect-ratio: auto;
+    min-height: 178px;
+  }
+
+  .race-hero__hospitality-content {
+    padding: 9px 12px 8px;
+    text-align: left;
+  }
+
+  .race-hero__hospitality-eyebrow {
+    font-size: 8px;
+    letter-spacing: 0.08em;
+  }
+
+  .race-hero__hospitality-title {
+    margin-top: 3px;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+  }
+
+  .race-hero__hospitality-cta {
+    gap: 6px;
+    min-height: 28px;
+    margin-top: 20px;
+    padding: 5px 9px;
+    font-size: 15px;
+  }
+
+  .race-hero__external-icon {
+    width: 22px;
+    height: 20px;
+    stroke-width: 2;
+    color: var(--color-acid);
+    margin-bottom: -1.25px;
+  }
+
+  .race-hero__actions {
+    width: auto;
+    max-width: 90%;
+    margin-top: 30px;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .race-hero__hospitality[hidden] + .race-hero__actions {
+    margin-top: 38px;
+  }
+
+  .race-hero__action-link {
+    gap: 6px;
+    min-height: 30px;
+    margin: 6px 14px;
+    font-size: 18px;
+    letter-spacing: 0.03em;
   }
 
   .race-hero__track {
@@ -849,7 +1098,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .race-hero__track-visual,
-  .race-hero__button {
+  .race-hero__hospitality-cta,
+  .race-hero__action-link {
     transition: none;
   }
 

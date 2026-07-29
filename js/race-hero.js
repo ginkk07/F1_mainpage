@@ -24,6 +24,15 @@ export function initRaceHero({ root, races }) {
     subtitle: root.querySelector("[data-race-subtitle]"),
     desc: root.querySelector("[data-race-desc]"),
     track: root.querySelector("[data-race-track]"),
+    hospitality: root.querySelector("[data-race-hospitality]"),
+    hospitalityMedia: root.querySelector("[data-race-hospitality-media]"),
+    hospitalityImage: root.querySelector("[data-race-hospitality-image]"),
+    hospitalityEyebrow: root.querySelector("[data-race-hospitality-eyebrow]"),
+    hospitalityTitle: root.querySelector("[data-race-hospitality-title]"),
+    hospitalityDesc: root.querySelector("[data-race-hospitality-desc]"),
+    hospitalityCta: root.querySelector("[data-race-hospitality-cta]"),
+    hospitalityLink: root.querySelector("[data-race-hospitality-link]"),
+    actions: root.querySelector("[data-race-actions]"),
     mapButton: root.querySelector("[data-race-map-button]"),
     itineraryButton: root.querySelector("[data-race-itinerary-button]"),
     bgCurrent: root.querySelector("[data-race-bg-current]"),
@@ -115,6 +124,72 @@ export function initRaceHero({ root, races }) {
     }
   }
 
+  function renderHospitality(hospitality) {
+    if (!els.hospitality) return;
+
+    const hasHospitality = Boolean(
+      hospitality &&
+      typeof hospitality === "object" &&
+      String(hospitality.title ?? "").trim()
+    );
+
+    els.hospitality.hidden = !hasHospitality;
+
+    if (!hasHospitality) {
+      if (els.hospitalityImage) {
+        els.hospitalityImage.removeAttribute("src");
+        els.hospitalityImage.alt = "";
+      }
+
+      updateActionLink(els.hospitalityLink, "");
+      return;
+    }
+
+    const imagePath = String(hospitality.image ?? "").trim();
+    const hasImage = Boolean(imagePath);
+
+    if (els.hospitalityMedia) {
+      els.hospitalityMedia.hidden = !hasImage;
+    }
+
+    if (els.hospitalityImage) {
+      if (hasImage) {
+        els.hospitalityImage.src = resolveAssetUrl(imagePath);
+        els.hospitalityImage.alt = String(hospitality.imageAlt ?? "");
+      } else {
+        els.hospitalityImage.removeAttribute("src");
+        els.hospitalityImage.alt = "";
+      }
+    }
+
+    if (els.hospitalityEyebrow) {
+      els.hospitalityEyebrow.textContent = String(
+        hospitality.eyebrow ?? "HOSPITALITY EXPERIENCE"
+      );
+    }
+
+    if (els.hospitalityTitle) {
+      els.hospitalityTitle.textContent = String(hospitality.title);
+    }
+
+    if (els.hospitalityDesc) {
+      const description = String(hospitality.description ?? "").trim();
+      els.hospitalityDesc.textContent = description;
+      els.hospitalityDesc.hidden = !description;
+    }
+
+    if (els.hospitalityCta) {
+      els.hospitalityCta.textContent = String(
+        hospitality.ctaLabel ?? "探索方案"
+      );
+    }
+
+    updateActionLink(
+      els.hospitalityLink,
+      normalizeLink(hospitality.url)
+    );
+  }
+
   function renderRaceContent(race) {
     if (els.date) els.date.textContent = race.dateText;
     if (els.title) els.title.textContent = race.heroTitle;
@@ -122,8 +197,16 @@ export function initRaceHero({ root, races }) {
     if (els.desc) els.desc.textContent = race.description;
     if (els.track) els.track.src = race.assets.trackSvg;
 
-    updateActionLink(els.mapButton, normalizeLink(race.mapUrl));
-    updateActionLink(els.itineraryButton, normalizeLink(race.itineraryUrl));
+    const mapUrl = normalizeLink(race.mapUrl);
+    const itineraryUrl = normalizeLink(race.itineraryUrl);
+
+    renderHospitality(race.hospitality);
+    updateActionLink(els.mapButton, mapUrl);
+    updateActionLink(els.itineraryButton, itineraryUrl);
+
+    if (els.actions) {
+      els.actions.hidden = !mapUrl && !itineraryUrl;
+    }
   }
 
   function applyRaceImmediately(race) {
@@ -399,6 +482,7 @@ export function initRaceHero({ root, races }) {
   pointerArea.addEventListener("pointerleave", resetPointerTilt);
   els.mapButton?.addEventListener("click", handleActionButtonClick);
   els.itineraryButton?.addEventListener("click", handleActionButtonClick);
+  els.hospitalityLink?.addEventListener("click", handleActionButtonClick);
   addMediaChangeListener(reduceMotionMedia, handleMotionPreferenceChange);
   addMediaChangeListener(desktopMedia, handleViewportModeChange);
 
@@ -424,6 +508,7 @@ export function initRaceHero({ root, races }) {
       pointerArea.removeEventListener("pointerleave", resetPointerTilt);
       els.mapButton?.removeEventListener("click", handleActionButtonClick);
       els.itineraryButton?.removeEventListener("click", handleActionButtonClick);
+      els.hospitalityLink?.removeEventListener("click", handleActionButtonClick);
       removeMediaChangeListener(reduceMotionMedia, handleMotionPreferenceChange);
       removeMediaChangeListener(desktopMedia, handleViewportModeChange);
     }

@@ -1,6 +1,7 @@
 /**
  * mapUrl：賽事地圖網址，留空時不顯示「查看地圖」。
  * itineraryUrl：旅遊行程網址，留空時不顯示「查看行程」。
+ * hospitality：包廂入口資料；未提供時不顯示包廂模組，也不保留空位。
  */
 export const RACE_DATA = [
   {
@@ -299,6 +300,15 @@ export const RACE_DATA = [
     isPopular: true,
     mapUrl: "https://www.tristar.com.tw/active/up/image/files/seat-map/index.html",
     itineraryUrl: "https://www.tristar.com.tw/grouptour/Detail/index/291",
+    hospitality: {
+      eyebrow: "SINGAPORE HOSPITALITY",
+      title: "尊榮包廂體驗",
+      description: "專屬VIP包廂視野、精緻餐飲與舒適空間，感受新加坡夜大獎賽。",
+      ctaLabel: "探索方案",
+      url: "https://www.tristar.com.tw/active/up/image/files/seat-map/index.html",
+      image: "assets/vip/Singapore_Paddock-Club.jpg",
+      imageAlt: "新加坡大獎賽夜間包廂觀賽視野"
+    },
     description:
       "新加坡大獎賽於燈火璀璨的濱海灣市街賽道舉行，車手需在高溫高濕、顛簸路面與貼牆彎道中長時間作戰。夜景、演唱會及城市娛樂，構成F1代表性夜間盛會。",
     assets: {

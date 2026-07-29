@@ -15,6 +15,16 @@
   <link rel="stylesheet" href="css/race-select.css">
 </head>
 <body>
+  <svg class="race-icon-sprite" aria-hidden="true">
+    <symbol id="icon-external-link" viewBox="0 0 20 20">
+      <path d="M6 14 14 6M8 6h6v6"></path>
+    </symbol>
+
+    <symbol id="icon-arrow-right" viewBox="0 0 20 20">
+      <path d="M4 10h11M11 6l4 4-4 4"></path>
+    </symbol>
+  </svg>
+
   <main class="race-page">
     <section class="race-hero" data-race-hero aria-labelledby="raceHeroTitle">
 
@@ -42,14 +52,42 @@
           <p class="race-hero__desc" data-race-desc>
             新加坡大獎賽是一級方程式賽車（F1）全球首個也是唯一的夜間街道賽。自2008年首辦以來，每年皆於市中心的濱海灣市街賽道 Marina Bay Street Circuit 舉行。結合了絢麗的城市夜景、高強度的賽車競技與頂級國際演唱會，使其成為F1賽曆中最具代表性、最像嘉年華的賽事之一。
           </p>
-          <div class="race-hero__actions">
-            <a class="race-hero__button" href="#" data-race-map-button>
+
+          <section class="race-hero__hospitality" data-race-hospitality hidden aria-label="包廂體驗">
+            <div class="race-hero__hospitality-card">
+              <div class="race-hero__hospitality-media" data-race-hospitality-media>
+                <img class="race-hero__hospitality-image" data-race-hospitality-image src="" alt="">
+              </div>
+
+              <div class="race-hero__hospitality-content">
+                <p class="race-hero__hospitality-eyebrow" data-race-hospitality-eyebrow></p>
+                <strong class="race-hero__hospitality-title" data-race-hospitality-title></strong>
+                <p class="race-hero__hospitality-desc" data-race-hospitality-desc></p>
+
+                <a class="race-hero__hospitality-cta" href="#" data-race-hospitality-link>
+                  <span data-race-hospitality-cta>探索方案</span>
+                  <svg class="race-hero__external-icon" aria-hidden="true">
+                    <use href="#icon-arrow-right"></use>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </section>
+
+          <nav class="race-hero__actions" data-race-actions aria-label="賽事相關連結">
+            <a class="race-hero__action-link" href="#" data-race-map-button>
               <span>查看地圖</span>
+              <svg class="race-hero__external-icon" aria-hidden="true">
+                <use href="#icon-external-link"></use>
+              </svg>
             </a>
-            <a class="race-hero__button" href="#" data-race-itinerary-button>
+            <a class="race-hero__action-link" href="#" data-race-itinerary-button>
               <span>查看行程</span>
+              <svg class="race-hero__external-icon" aria-hidden="true">
+                <use href="#icon-external-link"></use>
+              </svg>
             </a>
-          </div>
+          </nav>
         </div>
 
         <div class="race-hero__track" aria-hidden="true">
