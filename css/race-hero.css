@@ -1,6 +1,6 @@
 .race-hero {
-  --hero-bg-desktop: url("../assets/singapore-hero-pc.svg");
-  --hero-bg-mobile: url("../assets/singapore-hero-mobile.svg");
+  --hero-bg-desktop: url("../assets/pic/singapore/singapore-hero-desktop.jpg");
+  --hero-bg-mobile: url("../assets/pic/singapore/singapore-hero-mobile.jpg");
   --track-tilt-x: 0deg;
   --track-tilt-y: 0deg;
   --hospitality-gold: #aa9139;
@@ -962,7 +962,7 @@
     aspect-ratio: 420 / 70;
     width: var(--hero-deco-center-width);
     height: auto;
-    background: url("../assets/deco_mob-top.svg") center top / 100% 100% no-repeat;
+    background: url("../assets/ui/mobile-top-decoration.svg") center top / 100% 100% no-repeat;
   }
 
   .race-hero__grid {

@@ -99,7 +99,7 @@
   --surface-glow: rgba(255, 255, 255, 0);
   --mark-opacity: 0.42;
   --mark-bg: rgba(255, 255, 255, 0.05);
-  --mark-image: url("../assets/cardbg.png");
+  --mark-image: url("../assets/ui/race-card-bg.png");
 
   position: relative;
   min-width: 0;
@@ -243,7 +243,7 @@
   --surface-glow: #49031e;
   --mark-opacity: 0.9;
   --mark-bg: rgb(255 0 0 / 78%);
-  --mark-image: url("../assets/cardbg-act.png");
+  --mark-image: url("../assets/ui/race-card-bg-active.png");
 }
 
 .race-card.is-active .race-card__en,
