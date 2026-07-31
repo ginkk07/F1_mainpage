@@ -1023,7 +1023,7 @@ a:focus-visible,
   color: rgba(10, 12, 15, 0.72);
   font-size: 14px;
   line-height: 1.7;
-  letter-spacing: 0.025em;
+  letter-spacing: 0.02em;
 }
 
 .suite-card__mode {
