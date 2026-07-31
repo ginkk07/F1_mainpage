@@ -462,14 +462,26 @@ a:focus-visible,
   opacity: 0;
   background:
     radial-gradient(
-      circle 90px at var(--button-glow-x) var(--button-glow-y),
-      rgba(202, 162, 61, 0.548) 0%,
-      rgba(238, 212, 98, 0.2) 36%,
+      circle 68px at var(--button-glow-x) var(--button-glow-y),
+      rgba(202, 162, 61, 0.38) 0%,
+      rgba(238, 212, 98, 0.12) 36%,
       rgba(232, 188, 123, 0) 74%
     );
   mix-blend-mode: screen;
   transition: opacity 220ms ease;
 }
+
+.hospitality-hero--kv .hospitality-button--primary::after {
+  content: "";
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+
 
 .hospitality-hero--kv .hospitality-button--primary > * {
   position: relative;
@@ -479,6 +491,11 @@ a:focus-visible,
 @media (hover: hover) and (pointer: fine) {
   .hospitality-hero--kv .hospitality-button--primary:hover::before {
     opacity: 1;
+  }
+
+  .hospitality-hero--kv .hospitality-button--primary:hover::after {
+    box-shadow: inset 0 0 15px 0 #ffc200;
+    opacity: 0.5;
   }
 }
 
@@ -1771,7 +1788,7 @@ a:focus-visible,
 
 .comparison-table td {
   color: rgba(239, 236, 228, 0.62);
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.55;
 }
 
@@ -1933,7 +1950,7 @@ a:focus-visible,
 .hospitality-footer {
   display: grid;
   grid-template-columns: 1fr 1.5fr auto;
-  align-items: end;
+  align-items: center;
   gap: 50px;
   padding: 54px var(--section-x);
   color: rgba(239, 236, 228, 0.42);
@@ -1942,6 +1959,11 @@ a:focus-visible,
   font-size: 10px;
   line-height: 1.8;
   letter-spacing: 0.05em;
+}
+
+.footerlogo{
+  width: 242px;
+  height: auto;
 }
 
 .hospitality-footer p {
@@ -2724,6 +2746,7 @@ a:focus-visible,
     grid-template-columns: 1fr;
     gap: 28px;
     padding: 42px var(--section-x);
+    justify-items: center;
   }
 
   .hospitality-footer > a {
