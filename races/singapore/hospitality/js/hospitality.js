@@ -579,6 +579,30 @@ function initRevealAnimations() {
   revealElements.forEach((item) => observer.observe(item));
 }
 
+function initPrimaryButtonGlow() {
+  document
+    .querySelectorAll(
+      ".hospitality-hero--kv .hospitality-button--primary"
+    )
+    .forEach((button) => {
+      const updateGlowPosition = (event) => {
+        const bounds = button.getBoundingClientRect();
+
+        button.style.setProperty(
+          "--button-glow-x",
+          `${event.clientX - bounds.left}px`
+        );
+        button.style.setProperty(
+          "--button-glow-y",
+          `${event.clientY - bounds.top}px`
+        );
+      };
+
+      button.addEventListener("pointerenter", updateGlowPosition);
+      button.addEventListener("pointermove", updateGlowPosition);
+    });
+}
+
 function init() {
   renderFeaturedSelector();
   renderAreaIndex();
@@ -589,6 +613,7 @@ function init() {
   initNavigation();
   initHeader();
   initRevealAnimations();
+  initPrimaryButtonGlow();
 
   elements.featuredSelector?.addEventListener("click", handleFeaturedClick);
   elements.featuredSelector?.addEventListener(
