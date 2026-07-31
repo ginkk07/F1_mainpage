@@ -93,7 +93,7 @@ function createSeatMapApp() {
 
   // 起始狀態：所有 Zone 都未選取。
   // 這樣載入後左側座位列表會先顯示「無座位」，等使用者選 Zone 後再出現座位。
-  let activeZoneSet = new Set();
+  let activeZoneSet = new Set(["ZONE 1"]);
   let activeCategory = "grandstand";
   const selectedSeatIds = new Set();
 
