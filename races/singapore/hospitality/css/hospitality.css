@@ -745,7 +745,7 @@ a:focus-visible,
   padding: clamp(104px, 10vw, 168px) 0 clamp(90px, 9vw, 142px);
   overflow: hidden;
   color: var(--hospitality-ink);
-  background: #eceae6;
+  background: #e9e7e1;
 }
 
 .experience-section .section-heading h2 {
@@ -779,7 +779,7 @@ a:focus-visible,
   margin-top: 28px;
   color: var(--hospitality-ink);
   border-bottom: 1px solid rgba(10, 12, 15, 0.26);
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.13em;
   transition:
@@ -850,8 +850,8 @@ a:focus-visible,
   overflow: hidden;
   color: rgba(10, 12, 15, 0.44);
   font-family: var(--hospitality-display);
-  font-size: 10px;
-  letter-spacing: 0.15em;
+  font-size: 14px;
+  letter-spacing: 0.1em;
   line-height: 1.5;
   text-overflow: ellipsis;
   white-space: nowrap;
